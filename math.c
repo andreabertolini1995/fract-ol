@@ -10,23 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "fract_ol.h"
+#include <stdio.h>
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include <complex.h> // not sure I am allowed to use this one
-# include <math.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+int main()
+{
+  double complex imag = 4.0 * I; 
+  double real = 3.0; 
+  double complex num = real + imag; 
+  // print complex number
+  printf("z = %.1f%+.1fi\n", creal(num), cimag(num));
 
-// I don't understand how changing these values makes any difference nor what they represent
-# define WIDTH 1920 
-# define HEIGHT 995
+  // let's try to square this number
+  double complex num_squared;
+
+  num_squared = num * num;
+  printf("z = %.1f%+.1fi\n", creal(num_squared), cimag(num_squared));
 
 
-#endif
+}

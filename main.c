@@ -12,10 +12,7 @@
 
 #include "fract_ol.h"
 
-// Bytes Per Pixel. Since each pixel is represented as an integer, it will be four bytes for four channels.
-#define BPP sizeof(int32_t)
-
-static mlx_image_t* image;
+static mlx_image_t *image;
 
 static void ft_error(void)
 {
@@ -23,10 +20,24 @@ static void ft_error(void)
 	exit(EXIT_FAILURE);
 }
 
-void ft_hook(void* param)
+// 'Encodes' four individual bytes into an int.
+int get_rgba(int r, int g, int b, int a)
 {
-	mlx_t* mlx;
-	
+	return (r << 24 | g << 16 | b << 8 | a);
+}
+
+// Print the window width and height.
+// static void ft_print_width_and_height(void* param)
+// {
+// 	const mlx_t* mlx = param;
+
+// 	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
+// }
+
+void ft_hook(void *param)
+{
+	mlx_t *mlx;
+
 	mlx = param;
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
@@ -42,28 +53,47 @@ void ft_hook(void* param)
 
 int main(void)
 {
-	mlx_t* mlx;
+	mlx_t *mlx;
 
 	// MLX allows you to define its core behaviour before startup.
 	mlx_set_setting(MLX_MAXIMIZED, true); // not sure what this line is doing
-    
-	// Set up the window
-    mlx = mlx_init(WIDTH, HEIGHT, "fractol", true);
+
+	// Set up the window - it always opens a 1920x995 window no matter the input patameters though
+	mlx = mlx_init(WIDTH, HEIGHT, "fractol", true);
 	if (!mlx)
 		ft_error();
 
-	// Create an image (just a square) in the window
-	image = mlx_new_image(mlx, 128, 128);
+	// Create an image as big as the window
+	image = mlx_new_image(mlx, WIDTH, HEIGHT);
 	if (!image || (mlx_image_to_window(mlx, image, 0, 0) < 0))
 		ft_error();
 
-	// Colour the image white
-    memset(image->pixels, 255, image->width * image->height * BPP);
-	
+	// Colour the image white (by setting every pixel white)
+	// The third parameter tells us how much of the image we color I think
+	// Colour one pixel white (the smallest bit of the image I can color)
+	// In this way we are going from white to black because those are the colors
+	// where R, G, B are always the same
+	//ft_memset(image->pixels, 16121855, sizeof(int32_t) * image->height * image->width);
+	ft_memset(image->pixels, 16711935, sizeof(int32_t) * image->height * image->width);
+
+
+	// Draw the image at coordinate (0, 0).
+	mlx_image_to_window(mlx, image, 0, 1);
+
 	// Apply hook to move image with the keyboard
 	mlx_loop_hook(mlx, ft_hook, mlx);
-	
+
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
+
+/*
+Next steps:
+- Color the image a different color than white (generally understand how to access different colors)
+- Color multiple individual pixels with different colors --> have multiple colors in the same window
+- Understand how to color based on the manderlbrot set:
+	- Associate somehow a complex number to every pixel of the window
+	- Parse the window pixel by pixel, check the stability of the function with c as its complex number
+		associatd and color the pixel accordingly
+*/

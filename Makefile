@@ -1,5 +1,5 @@
 NAME = fractol
-SOURCES = main.c
+SOURCES = test.c
 FT_PRINTF = ft_printf/ft_printf.a
 LIBFT = libft/libft.a
 MLX42 = MLX42/build/libmlx42.a
@@ -14,7 +14,7 @@ MLXFLAGS = -ldl -lglfw -pthread -lm
 all: $(NAME)	
 
 $(NAME): $(FT_PRINTF) $(MLX42) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME)
 
 $(LIBFT):
 	make -C libft
