@@ -10,20 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
-
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	(*del)(lst->content);
+	free(lst);
+}

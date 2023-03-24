@@ -10,20 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t	i;
+	char	*destptr;
+	char	*srcptr;
 
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+	destptr = (char *) dest;
+	srcptr = (char *) src;
+	if (destptr == NULL && srcptr == NULL)
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		destptr[i] = srcptr[i];
+		i++;
+	}
+	return (dest);
+}

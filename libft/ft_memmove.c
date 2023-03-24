@@ -10,20 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+void	*ft_memmove(void *dest, const void *src, size_t n)
+{
+	int		i;
 
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	if (dest > src)
+	{
+		i = (int) n - 1;
+		while (i >= 0)
+		{
+			((char *) dest)[i] = ((char *) src)[i];
+			i--;
+		}
+	}
+	else
+	{
+		i = 0;
+		while (i < (int) n)
+		{
+			((char *) dest)[i] = ((char *) src)[i];
+			i++;
+		}
+	}
+	return (dest);
+}

@@ -10,20 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
-
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+void	ft_putnbr_fd(int n, int fd)
+{
+	if (n == -2147483648)
+		write(fd, "-2147483648", 11);
+	else if (n >= 0 && n < 10)
+	{
+		ft_putchar_fd(n + 48, fd);
+	}
+	else if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putchar_fd((n % 10) + 48, fd);
+	}
+	else if (n < 0)
+	{
+		ft_putchar_fd(45, fd);
+		ft_putnbr_fd(-n, fd);
+	}
+}

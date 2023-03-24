@@ -1,6 +1,7 @@
 {
-  "files.associations": {
-    "*.ejs": "html",
-    "fract_ol.h": "c"
-  }
+    "files.associations": {
+        "compare": "c",
+        "ft_printf.h": "c",
+        "cstdio": "c"
+    }
 }

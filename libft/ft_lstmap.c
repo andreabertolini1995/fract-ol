@@ -10,20 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+{
+	t_list	*first;
+	t_list	*tmp;
+	t_list	*useless;
 
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+	useless = NULL;
+	first = NULL;
+	while (lst != NULL)
+	{
+		tmp = ft_lstnew((*f)(lst->content));
+		ft_lstadd_back(&first, tmp);
+		lst = lst->next;
+	}
+	(*del)(useless);
+	return (first);
+}

@@ -10,20 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	i;
+	char	*sptr;
 
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+	sptr = (char *) s;
+	i = 0;
+	while (i < n)
+	{
+		sptr[i] = c;
+		i++;
+	}
+	return (s);
+}

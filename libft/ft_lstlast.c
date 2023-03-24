@@ -10,20 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+t_list	*ft_lstlast(t_list *lst)
+{
+	t_list	*last_node;
 
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+	if (lst == NULL)
+		last_node = NULL;
+	while (lst != NULL)
+	{
+		last_node = lst;
+		lst = lst->next;
+	}
+	return (last_node);
+}

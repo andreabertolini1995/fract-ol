@@ -10,12 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fract_ol.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_isprint(int c)
 {
-	void	*mlx;
-
-	mlx = mlx_init();
-    // ft_printf("Ciao");
+	if (c >= 32 && c <= 126)
+		return (16384);
+	return (0);
 }

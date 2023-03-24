@@ -10,20 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACT_OL_H
-# define FRACT_OL_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+void	*ft_calloc(size_t n, size_t size)
+{
+	void	*str;
 
-# define WIDTH 256
-# define HEIGHT 256
-
-
-#endif
+	str = malloc (n * size);
+	if (str == NULL)
+		return (NULL);
+	ft_bzero(str, n * size);
+	return (str);
+}
