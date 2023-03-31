@@ -3,6 +3,7 @@
         "compare": "c",
         "ft_printf.h": "c",
         "cstdio": "c",
-        "numeric": "c"
+        "numeric": "c",
+        "cstdlib": "c"
     }
 }

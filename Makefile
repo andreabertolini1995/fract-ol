@@ -1,5 +1,5 @@
 NAME = fractol
-SOURCES = test.c
+SOURCES = main.c fractals_math.c
 FT_PRINTF = ft_printf/ft_printf.a
 LIBFT = libft/libft.a
 MLX42 = MLX42/build/libmlx42.a
@@ -15,6 +15,8 @@ all: $(NAME)
 
 $(NAME): $(FT_PRINTF) $(MLX42) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME)
+# MACOS
+# $(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME) -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/"
 
 $(LIBFT):
 	make -C libft
