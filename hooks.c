@@ -26,7 +26,7 @@ void color_fractal(void *param)
 		y = 0;
 		while (y < fractal->image->height)
 		{
-			color = color_set(x, y, fractal->set, fractal->zoom);
+			color = color_set(x, y, fractal);
 			mlx_put_pixel(fractal->image, x, y, color);
 			y++;
 		}

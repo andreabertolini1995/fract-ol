@@ -13,12 +13,10 @@
 #ifndef FRACT_OL_H
 # define FRACT_OL_H
 
-# include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
-# include <complex.h> // not sure I am allowed to use this one
 # include <math.h>
 # include "./libft/libft.h"
 # include "./ft_printf/ft_printf.h"
@@ -29,6 +27,12 @@
 # define HEIGHT 995
 # define ITERATIONS 100
 
+typedef struct s_complex
+{
+    double  real;
+    double  imag; 
+}   t_complex;
+
 // Fractals struct
 typedef struct s_fractal
 {
@@ -36,13 +40,17 @@ typedef struct s_fractal
 	mlx_image_t         *image;
 	double              zoom;
     char                *set;
+    t_complex           *cursor_pos;
 }	t_fractal;
 
+
 // Fractals math
-float complex   from_mlx_to_complex(double x, double y, double zoom);
-uint32_t        color_set(double x, double y, char *set, double zoom);
-int             create_set(double x, double y, char *set, double zoom);
-int             check_stability(double complex z, double complex c);
+t_complex       *from_mlx_to_complex(double x, double y, t_fractal *fractal);
+uint32_t        color_set(double x, double y, t_fractal *fractal);
+int             create_set(double x, double y, t_fractal *fractal);
+int             check_stability(t_complex *z, t_complex *c);
+// t_complex       *center_fractal(double x, double y, t_fractal *fractal);
+
 
 // MLX-related functions
 int32_t         ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);

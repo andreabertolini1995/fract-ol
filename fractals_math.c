@@ -12,23 +12,18 @@
 
 #include "fract_ol.h"
 
-extern double zoom_factor;
-extern double Xpos;
-extern double Ypos;
-extern double Xposition;
-extern double Yposition;
-
-float complex  from_mlx_to_complex(double x, double y, double zoom)
+t_complex  *from_mlx_to_complex(double x, double y, t_fractal *fractal)
 {
-	double			real;
-	double complex	imag;
-	double complex	num;
+	t_complex *num;
 
-	real = (-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT * zoom;
-	imag = ((1 - 2 * (y / HEIGHT)) * I) * zoom;
-	num = real + imag;
+	num = malloc (sizeof(t_complex));
+	if (num == NULL)
+		return (NULL);
+	num->real = (-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT * fractal->zoom;
+	num->imag = ((1 - 2 * (y / HEIGHT))) * fractal->zoom;
 	return num;
 }
+
 
 /* Inverse functions of the above function. */
 int	from_real_to_mlx(double real)
@@ -47,46 +42,61 @@ int	from_imag_to_mlx(double imag)
 	return (y);
 }
 
-int check_stability(double complex z, double complex c)
+int check_stability(t_complex *z, t_complex *c)
 {
-	int	i;
+	t_complex	*tmp;
+	int			i;
 
+	tmp = malloc (sizeof(t_complex));
+	if (tmp == NULL)
+		return (0);
 	i = 0;
 	while (i < ITERATIONS)
 	{
-		z = z * z + c;
-		if (creal(z) == INFINITY || cimag(z) == INFINITY)
+		tmp->real = (z->real * z->real - z->imag * z->imag) + c->real;
+		tmp->imag = (2 * z->real * z->imag) + c->imag;
+		z->real = tmp->real;
+		z->imag = tmp->imag;
+		if (z->real == INFINITY || z->imag == INFINITY
+			|| !(z->real == z->real) || !(z->imag == z->imag))
 			return i;
 		i++;
 	}
 	return i;
 }
 
-int	create_set(double x, double y, char *set, double zoom)
+int	create_set(double x, double y, t_fractal *fractal)
 {
-	double complex	z;
-	double complex	c;
+	t_complex	*z;
+	t_complex	*c;
 
-	if (!strncmp(set, "mendelbrot", strlen(set)))  // to change with my own functions
+	z = malloc (sizeof(t_complex));
+	if (z == NULL)
+		return (0);
+	c = malloc (sizeof(t_complex));
+	if (c == NULL)
+		return (0);
+	if (!strncmp(fractal->set, "mandelbrot", strlen(fractal->set)))  // to change with my own functions
 	{
-		c = from_mlx_to_complex(x, y, zoom);
-		z = 0;
+		c = from_mlx_to_complex(x, y, fractal);
+		z->real = 0;
+		z->imag = 0;
 	}
 	else
 	{
-		z = from_mlx_to_complex(x, y, zoom);
-		c = -0.8 + 0.156 * I;
+		z = from_mlx_to_complex(x, y, fractal);
+		c->real = -0.8;
+		c->imag = 0.156;
 	}
 	return (check_stability(z, c));
 }
 
-uint32_t	color_set(double x, double y, char *set, double zoom)
+uint32_t	color_set(double x, double y, t_fractal *fractal)
 {
 	int 		iter;
 	uint32_t	color;
 
-	// iter = check_stability_mandelbrot(x, y);
-	iter = create_set(x, y, set, zoom);
+	iter = create_set(x, y, fractal);
 	if (iter < 60)
 		color = ft_pixel(0, iter*4, 255, 58); // blue and its variants
 	else if (iter >= 60 && iter < 100)
