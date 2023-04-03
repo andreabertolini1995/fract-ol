@@ -29,13 +29,27 @@
 # define HEIGHT 995
 # define ITERATIONS 100
 
+// Fractals struct
+typedef struct s_fractal
+{
+    mlx_t			    *window;
+	mlx_image_t         *image;
+	double              zoom;
+    char                *set;
+}	t_fractal;
+
 // Fractals math
-float complex   from_mlx_to_complex(double x, double y);
-uint32_t        color_set(double x, double y, char *set);
-int             create_set(double x, double y, char *set);
+float complex   from_mlx_to_complex(double x, double y, double zoom);
+uint32_t        color_set(double x, double y, char *set, double zoom);
+int             create_set(double x, double y, char *set, double zoom);
 int             check_stability(double complex z, double complex c);
 
 // MLX-related functions
 int32_t         ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+
+// Hooks
+void            color_fractal(void *param);
+void            my_zoomhook(double xdelta, double ydelta, void* param);
+void            my_cursorhook(double xpos, double ypos, void* param);
 
 #endif

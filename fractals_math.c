@@ -18,16 +18,14 @@ extern double Ypos;
 extern double Xposition;
 extern double Yposition;
 
-float complex  from_mlx_to_complex(double x, double y)
+float complex  from_mlx_to_complex(double x, double y, double zoom)
 {
 	double			real;
 	double complex	imag;
 	double complex	num;
 
-	/* The zoom hook can be introduced to change
-		the '2' in the equation below */
-	real = (-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT * zoom_factor;
-	imag = ((1 - 2 * (y / HEIGHT)) * I) * zoom_factor;
+	real = (-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT * zoom;
+	imag = ((1 - 2 * (y / HEIGHT)) * I) * zoom;
 	num = real + imag;
 	return num;
 }
@@ -64,31 +62,31 @@ int check_stability(double complex z, double complex c)
 	return i;
 }
 
-int	create_set(double x, double y, char *set)
+int	create_set(double x, double y, char *set, double zoom)
 {
 	double complex	z;
 	double complex	c;
 
 	if (!strncmp(set, "mendelbrot", strlen(set)))  // to change with my own functions
 	{
-		c = from_mlx_to_complex(x, y);
+		c = from_mlx_to_complex(x, y, zoom);
 		z = 0;
 	}
 	else
 	{
-		z = from_mlx_to_complex(x, y);
+		z = from_mlx_to_complex(x, y, zoom);
 		c = -0.8 + 0.156 * I;
 	}
 	return (check_stability(z, c));
 }
 
-uint32_t	color_set(double x, double y, char *set)
+uint32_t	color_set(double x, double y, char *set, double zoom)
 {
 	int 		iter;
 	uint32_t	color;
 
 	// iter = check_stability_mandelbrot(x, y);
-	iter = create_set(x, y, set);
+	iter = create_set(x, y, set, zoom);
 	if (iter < 60)
 		color = ft_pixel(0, iter*4, 255, 58); // blue and its variants
 	else if (iter >= 60 && iter < 100)
