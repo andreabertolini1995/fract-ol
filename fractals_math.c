@@ -12,6 +12,12 @@
 
 #include "fract_ol.h"
 
+extern double zoom_factor;
+extern double Xpos;
+extern double Ypos;
+extern double Xposition;
+extern double Yposition;
+
 float complex  from_mlx_to_complex(double x, double y)
 {
 	double			real;
@@ -20,8 +26,8 @@ float complex  from_mlx_to_complex(double x, double y)
 
 	/* The zoom hook can be introduced to change
 		the '2' in the equation below */
-	real = -1 + 2 *(x / WIDTH);
-	imag = (1 - 2 * (y / HEIGHT)) * I;
+	real = (-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT * zoom_factor;
+	imag = ((1 - 2 * (y / HEIGHT)) * I) * zoom_factor;
 	num = real + imag;
 	return num;
 }
@@ -43,12 +49,46 @@ int	from_imag_to_mlx(double imag)
 	return (y);
 }
 
-uint32_t	color_stability(double x, double y)
+int check_stability(double complex z, double complex c)
+{
+	int	i;
+
+	i = 0;
+	while (i < ITERATIONS)
+	{
+		z = z * z + c;
+		if (creal(z) == INFINITY || cimag(z) == INFINITY)
+			return i;
+		i++;
+	}
+	return i;
+}
+
+int	create_set(double x, double y, char *set)
+{
+	double complex	z;
+	double complex	c;
+
+	if (!strncmp(set, "mendelbrot", strlen(set)))  // to change with my own functions
+	{
+		c = from_mlx_to_complex(x, y);
+		z = 0;
+	}
+	else
+	{
+		z = from_mlx_to_complex(x, y);
+		c = -0.8 + 0.156 * I;
+	}
+	return (check_stability(z, c));
+}
+
+uint32_t	color_set(double x, double y, char *set)
 {
 	int 		iter;
 	uint32_t	color;
 
-	iter = check_stability(x, y);
+	// iter = check_stability_mandelbrot(x, y);
+	iter = create_set(x, y, set);
 	if (iter < 60)
 		color = ft_pixel(0, iter*4, 255, 58); // blue and its variants
 	else if (iter >= 60 && iter < 100)
@@ -56,23 +96,4 @@ uint32_t	color_stability(double x, double y)
 	else
 		color = ft_pixel(0, 0, 0, 58); // black
 	return (color);
-}
-
-int	check_stability(double x, double y)
-{
-	int 			i;	
-	double complex	num;
-	double complex	c;
-
-	c = from_mlx_to_complex(x, y);
-	num = 0;
-	i = 0;
-	while (i < ITERATIONS)
-	{
-		num = num * num + c;
-		if (creal(num) == INFINITY || cimag(num) == INFINITY)
-			return i;
-		i++;
-	}
-	return i;
 }
