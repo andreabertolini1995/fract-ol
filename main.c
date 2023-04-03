@@ -12,27 +12,40 @@
 
 #include "fract_ol.h"
 
-static void ft_error(void)
-{
-	printf("%s", mlx_strerror(mlx_errno));
-	exit(EXIT_FAILURE);
-}
-
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
-t_complex	*initialize_cursor()
+void ft_error(void)
 {
-	t_complex		*cursor_pos;
+	printf("%s", mlx_strerror(mlx_errno));
+	exit(EXIT_FAILURE);
+}
 
-	cursor_pos = malloc (sizeof(t_fractal));
-	if (cursor_pos == NULL)
+t_complex *initialize_complex()
+{
+	t_complex	*compl;
+
+	compl = malloc (sizeof(t_complex));
+		if (compl == NULL)
+			return (NULL);
+	compl->real = 0;
+	compl->imag = 0;
+	return (compl);
+}
+
+t_cursor	*initialize_cursor()
+{
+	t_cursor		*cursor;
+
+	cursor = malloc (sizeof(t_cursor));
+	if (cursor == NULL)
 		return (NULL);
-	cursor_pos->real = 0;
-	cursor_pos->imag = 0;
-	return (cursor_pos);
+	cursor->x = 0;
+	cursor->y = 0;
+	cursor->pos = initialize_complex();
+	return (cursor);
 }
 
 t_fractal *initialize_fractal(char *set)
@@ -50,7 +63,7 @@ t_fractal *initialize_fractal(char *set)
 		ft_error();
 	fractal->set = set;
 	fractal->zoom = 1;
-	fractal->cursor_pos = initialize_cursor();
+	fractal->cursor = initialize_cursor();
 	return (fractal);
 }
 
@@ -59,7 +72,7 @@ void color_fractal(void *param)
 	uint32_t		x;
 	uint32_t		y;
 	uint32_t		color;
-	t_fractal*		fractal;
+	t_fractal		*fractal;
 
 	fractal = (t_fractal*) param;
 	x = 0;
@@ -76,42 +89,28 @@ void color_fractal(void *param)
 	}
 }
 
-void my_zoomhook(double xdelta, double ydelta, void* param)
+void my_zoomhook(double xdelta, double ydelta, void *param)
 {
-	t_fractal*		fractal;
+	t_fractal	*fractal;
 
 	fractal = (t_fractal*) param;
-	// To improve the responsiveness of the zoom feature
+	mlx_get_mouse_pos(fractal->window, &(fractal->cursor->x), &(fractal->cursor->y));
+	fractal->cursor->pos = from_mlx_to_complex(fractal->cursor->x, fractal->cursor->y, fractal);
+	printf("Mouse pos: %f + %fi\n", fractal->cursor->pos->real, fractal->cursor->pos->imag);
 	if (ydelta < 0)
 	{
-		printf("I want to zoom out know.\n");
-		mlx_cursor_hook(fractal->window, &my_cursorhook, fractal);
-		printf("Position where to zoom out: %f + i%f\n", fractal->cursor_pos->real, fractal->cursor_pos->imag);
 		fractal->zoom = fractal->zoom * fabs(ydelta * 10);
-	}	
+		printf("Zoom: %f\n", fractal->zoom);
+	}
 	else if (ydelta > 0)
 	{
-		printf("I want to zoom in know.\n");
-		mlx_cursor_hook(fractal->window, &my_cursorhook, fractal);
-		printf("Position where to zoom in: %f + i%f\n", fractal->cursor_pos->real, fractal->cursor_pos->imag);
 		fractal->zoom = fractal->zoom / fabs(ydelta * 10);
+		printf("Zoom: %f\n", fractal->zoom);
 	}
-    // fractal->zoom = fractal->zoom * ydelta;
-	// printf("Zoom: %f\n", fractal->zoom);
 	if (xdelta < 0)
 		puts("Left!");
 	else if (xdelta > 0)
 		puts("Right!");
-}
-
-void my_cursorhook(double xpos, double ypos, void* param)
-{
-	t_fractal*		fractal;
-
-	fractal = (t_fractal*) param;
-	fractal->cursor_pos = from_mlx_to_complex(xpos, ypos, fractal);
-	// printf("Xpos: %f\n", xpos);
-	// printf("Ypos:  %f\n", ypos);
 }
 
 int main(int argc, char **argv)
@@ -136,6 +135,6 @@ int main(int argc, char **argv)
 Next steps:
 - apply the zoom
 	- double check that if you zoom into the black you won't find anything --> how is supposed to be the mandatory part then
-	- if I zoom to much (probably in the black) the image rotates
+	- would be interesting, as an intermediate step, to set the "center" from which it zoomes
 	- the zoom doesn't follow the mouse at the moment
 */

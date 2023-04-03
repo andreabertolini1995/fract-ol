@@ -27,11 +27,20 @@
 # define HEIGHT 995
 # define ITERATIONS 100
 
+// Complex number sruct
 typedef struct s_complex
 {
     double  real;
     double  imag; 
 }   t_complex;
+
+// Cursor struct
+typedef struct s_cursor
+{
+    int32_t     x;
+    int32_t     y;
+    t_complex   *pos;
+}   t_cursor;
 
 // Fractals struct
 typedef struct s_fractal
@@ -40,9 +49,14 @@ typedef struct s_fractal
 	mlx_image_t         *image;
 	double              zoom;
     char                *set;
-    t_complex           *cursor_pos;
+    t_cursor            *cursor;
 }	t_fractal;
 
+// Initialization
+t_complex   *initialize_complex();
+t_cursor	*initialize_cursor();
+t_fractal   *initialize_fractal(char *set);
+void        ft_error(void);
 
 // Fractals math
 t_complex       *from_mlx_to_complex(double x, double y, t_fractal *fractal);

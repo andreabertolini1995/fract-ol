@@ -19,11 +19,29 @@ t_complex  *from_mlx_to_complex(double x, double y, t_fractal *fractal)
 	num = malloc (sizeof(t_complex));
 	if (num == NULL)
 		return (NULL);
-	num->real = (-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT * fractal->zoom;
-	num->imag = ((1 - 2 * (y / HEIGHT))) * fractal->zoom;
+	// Still not clear how to apply the zoom
+	num->real = ((-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT - fractal->cursor->pos->real) * fractal->zoom;
+	num->imag = ((1 - 2 * (y / HEIGHT)) - fractal->cursor->pos->imag) * fractal->zoom;
 	return num;
 }
 
+// t_complex *center_fractal(t_complex *num, t_fractal *fractal)
+// {
+// 	num->real = num->real + fractal->center->real;
+// 	num->imag = num->imag + fractal->center->imag;
+// }
+
+// t_complex  *shift_fractal(double x, double y, t_fractal *fractal)
+// {
+// 	t_complex *num;
+
+// 	num = malloc (sizeof(t_complex));
+// 	if (num == NULL)
+// 		return (NULL);
+// 	num->real = (-1 + 2 * (x / WIDTH) + fractal->cursor->x) * WIDTH/HEIGHT * fractal->zoom;
+// 	num->imag = ((1 - 2 * (y / HEIGHT)) + fractal->cursor->y) * fractal->zoom;
+// 	return num;
+// }
 
 /* Inverse functions of the above function. */
 int	from_real_to_mlx(double real)
