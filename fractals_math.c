@@ -19,29 +19,25 @@ t_complex  *from_mlx_to_complex(double x, double y, t_fractal *fractal)
 	num = malloc (sizeof(t_complex));
 	if (num == NULL)
 		return (NULL);
-	// Still not clear how to apply the zoom
-	num->real = ((-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT - fractal->cursor->pos->real) * fractal->zoom;
-	num->imag = ((1 - 2 * (y / HEIGHT)) - fractal->cursor->pos->imag) * fractal->zoom;
+
+	// This is to center the fractal where I want
+	// It must be wrong though, because it does not work with (0,0) anymore
+	x = x + fractal->center->x - WIDTH/2;
+	y = y + fractal->center->y - HEIGHT/2;
+
+	// From mlx to complex
+	num->real = (-1 + 2 * (x / WIDTH)) * WIDTH/HEIGHT;
+	num->imag = (1 - 2 * (y / HEIGHT));
+
+	// The zoom is still somehow set near to the center of the fractal --> because it's 0 + 0j and it's the only point invariant to the zoom
+	// If I understand how to apply zooming properly to the center, I then just need to apply the same logic to the cursor and it should be fine
+	
+	// Apply the zoom - it's fine that the zoom is applied to the complex numbers
+	num->real = (num->real - fractal->center->pos->real) * fractal->zoom ;
+	num->imag = (num->imag - fractal->center->pos->real) * fractal->zoom;
 	return num;
 }
 
-// t_complex *center_fractal(t_complex *num, t_fractal *fractal)
-// {
-// 	num->real = num->real + fractal->center->real;
-// 	num->imag = num->imag + fractal->center->imag;
-// }
-
-// t_complex  *shift_fractal(double x, double y, t_fractal *fractal)
-// {
-// 	t_complex *num;
-
-// 	num = malloc (sizeof(t_complex));
-// 	if (num == NULL)
-// 		return (NULL);
-// 	num->real = (-1 + 2 * (x / WIDTH) + fractal->cursor->x) * WIDTH/HEIGHT * fractal->zoom;
-// 	num->imag = ((1 - 2 * (y / HEIGHT)) + fractal->cursor->y) * fractal->zoom;
-// 	return num;
-// }
 
 /* Inverse functions of the above function. */
 int	from_real_to_mlx(double real)

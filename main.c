@@ -23,29 +23,42 @@ void ft_error(void)
 	exit(EXIT_FAILURE);
 }
 
-t_complex *initialize_complex()
+t_complex *initialize_complex(double real, double imag)
 {
 	t_complex	*compl;
 
 	compl = malloc (sizeof(t_complex));
 		if (compl == NULL)
 			return (NULL);
-	compl->real = 0;
-	compl->imag = 0;
+	compl->real = real;
+	compl->imag = imag;
 	return (compl);
 }
 
-t_cursor	*initialize_cursor()
+t_point	*initialize_cursor()
 {
-	t_cursor		*cursor;
+	t_point		*cursor;
 
-	cursor = malloc (sizeof(t_cursor));
+	cursor = malloc (sizeof(t_point));
 	if (cursor == NULL)
 		return (NULL);
 	cursor->x = 0;
 	cursor->y = 0;
-	cursor->pos = initialize_complex();
+	cursor->pos = initialize_complex(0, 0);
 	return (cursor);
+}
+
+t_point	*initialize_center()
+{
+	t_point		*center;
+
+	center = malloc (sizeof(t_point));
+	if (center == NULL)
+		return (NULL);
+	center->pos = initialize_complex(0, 0);
+	center->x = from_real_to_mlx(center->pos->real);
+	center->y = from_imag_to_mlx(center->pos->imag);
+	return (center);
 }
 
 t_fractal *initialize_fractal(char *set)
@@ -64,22 +77,23 @@ t_fractal *initialize_fractal(char *set)
 	fractal->set = set;
 	fractal->zoom = 1;
 	fractal->cursor = initialize_cursor();
+	fractal->center = initialize_center();
 	return (fractal);
 }
 
 void color_fractal(void *param)
 {
-	uint32_t		x;
-	uint32_t		y;
+	int				x;
+	int				y;
 	uint32_t		color;
 	t_fractal		*fractal;
 
 	fractal = (t_fractal*) param;
 	x = 0;
-	while (x < fractal->image->width)
+	while (x < WIDTH)
 	{
 		y = 0;
-		while (y < fractal->image->height)
+		while (y < HEIGHT)
 		{
 			color = color_set(x, y, fractal);
 			mlx_put_pixel(fractal->image, x, y, color);
@@ -96,7 +110,7 @@ void my_zoomhook(double xdelta, double ydelta, void *param)
 	fractal = (t_fractal*) param;
 	mlx_get_mouse_pos(fractal->window, &(fractal->cursor->x), &(fractal->cursor->y));
 	fractal->cursor->pos = from_mlx_to_complex(fractal->cursor->x, fractal->cursor->y, fractal);
-	printf("Mouse pos: %f + %fi\n", fractal->cursor->pos->real, fractal->cursor->pos->imag);
+	// printf("Mouse pos: %f + %fi\n", fractal->cursor->pos->real, fractal->cursor->pos->imag);
 	if (ydelta < 0)
 	{
 		fractal->zoom = fractal->zoom * fabs(ydelta * 10);

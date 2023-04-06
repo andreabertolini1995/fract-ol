@@ -35,12 +35,12 @@ typedef struct s_complex
 }   t_complex;
 
 // Cursor struct
-typedef struct s_cursor
+typedef struct s_point
 {
     int32_t     x;
     int32_t     y;
     t_complex   *pos;
-}   t_cursor;
+}   t_point;
 
 // Fractals struct
 typedef struct s_fractal
@@ -49,17 +49,20 @@ typedef struct s_fractal
 	mlx_image_t         *image;
 	double              zoom;
     char                *set;
-    t_cursor            *cursor;
+    t_point             *center;
+    t_point             *cursor;
 }	t_fractal;
 
 // Initialization
-t_complex   *initialize_complex();
-t_cursor	*initialize_cursor();
+t_complex   *initialize_complex(double real, double imag);
+t_point     *initialize_cursor();
 t_fractal   *initialize_fractal(char *set);
 void        ft_error(void);
 
 // Fractals math
 t_complex       *from_mlx_to_complex(double x, double y, t_fractal *fractal);
+int             from_real_to_mlx(double real);
+int             from_imag_to_mlx(double imag);
 uint32_t        color_set(double x, double y, t_fractal *fractal);
 int             create_set(double x, double y, t_fractal *fractal);
 int             check_stability(t_complex *z, t_complex *c);
