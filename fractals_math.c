@@ -46,6 +46,7 @@ int	check_stability(t_complex *z, t_complex *c)
 			return (i);
 		i++;
 	}
+	free(tmp);
 	return (i);
 }
 
@@ -53,12 +54,10 @@ int	create_set(double x, double y, t_fractal *fractal)
 {
 	t_complex	*z;
 	t_complex	*c;
+	int			iterations;
 
 	z = malloc (sizeof(t_complex));
 	if (z == NULL)
-		return (0);
-	c = malloc (sizeof(t_complex));
-	if (c == NULL)
 		return (0);
 	if (!strncmp(fractal->set, "mandelbrot", strlen(fractal->set)))  // to change with my own functions
 	{
@@ -68,11 +67,17 @@ int	create_set(double x, double y, t_fractal *fractal)
 	}
 	else
 	{
+		c = malloc (sizeof(t_complex));
+		if (c == NULL)
+			return (0);
 		z = from_mlx_to_complex(x, y, fractal);
 		c->real = -0.8;
 		c->imag = 0.156;
 	}
-	return (check_stability(z, c));
+	iterations = check_stability(z, c);
+	free(c);
+	free(z);
+	return iterations;
 }
 
 uint32_t	color_set(double x, double y, t_fractal *fractal)
@@ -84,21 +89,6 @@ uint32_t	color_set(double x, double y, t_fractal *fractal)
 	if (iter < ITERATIONS)
 		color = ft_pixel(iter * 4, iter * 2, iter * 3, 58);
 	else
-		color = ft_pixel(0, 0, 0, 58); // black
+		color = ft_pixel(0, 0, 0, 58);
 	return (color);
 }
-
-// uint32_t	color_set(double x, double y, t_fractal *fractal)
-// {
-// 	int 		iter;
-// 	uint32_t	color;
-
-// 	iter = create_set(x, y, fractal);
-// 	if (iter < 60)
-// 		color = ft_pixel(0, iter*4, 255, 58); // blue and its variants
-// 	else if (iter >= 60 && iter < 100)
-// 		color = ft_pixel(255, iter*4, 0, 58); // red and its variants
-// 	else
-// 		color = ft_pixel(0, 0, 0, 58); // black
-// 	return (color);
-// }

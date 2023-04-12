@@ -1,4 +1,5 @@
 NAME = fractol
+# SOURCES = test.c
 SOURCES = main.c fractals_math.c
 FT_PRINTF = ft_printf/ft_printf.a
 LIBFT = libft/libft.a

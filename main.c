@@ -137,13 +137,23 @@ int	main(int argc, char **argv)
 		printf("No set has been specified.\n");
 	else
 	{
-		fractal = initialize_fractal(argv[1]);
-		mlx_loop_hook(fractal->window, color_fractal, fractal);
-		mlx_loop_hook(fractal->window, ft_keys_hook, fractal);
-		mlx_scroll_hook(fractal->window, &my_zoomhook, fractal);
-		mlx_resize_hook(fractal->window, NULL, NULL);
-		mlx_loop(fractal->window);
-		mlx_terminate(fractal->window);
-		return (EXIT_SUCCESS);
+		if (strncmp(argv[1], "mandelbrot", strlen(argv[1]))
+			&& strncmp(argv[1], "julia", strlen(argv[1])))
+			{
+				printf("Please enter a valid set name.\n");
+				return (0);
+			}
+		else
+		{
+			fractal = initialize_fractal(argv[1]);
+			mlx_loop_hook(fractal->window, color_fractal, fractal);
+			mlx_loop_hook(fractal->window, ft_keys_hook, fractal);
+			mlx_scroll_hook(fractal->window, &my_zoomhook, fractal);
+			mlx_resize_hook(fractal->window, NULL, NULL);
+			mlx_loop(fractal->window);
+			mlx_terminate(fractal->window);
+			free(fractal); // I don't know if I am freeing also compl and cursor by doing this
+			return (EXIT_SUCCESS);
+		}
 	}
 }
