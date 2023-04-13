@@ -90,7 +90,28 @@ void	color_fractal(void *param)
 	}
 }
 
-// Check if this function works at 42 computers
+// Specialized hook - it works but can't re render - might need to use a generic hook as mentioned in the documentation
+// void my_keyhook(mlx_key_data_t keydata, void* param)
+// {
+// 	t_fractal	*fractal;
+
+// 	fractal = (t_fractal *) param;
+// 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+// 		mlx_close_window(fractal->window);
+// 	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
+// 	{
+// 		fractal->image->instances[0].y -= 5;
+// 		color_fractal(fractal);
+// 	}
+// 	if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
+// 		fractal->image->instances[0].y += 5;
+// 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
+// 		fractal->image->instances[0].x -= 5;
+// 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
+// 		fractal->image->instances[0].x += 5;
+// }
+
+// Somehow this does not work well when called 'together' with the other hook
 void	ft_keys_hook(void *param)
 {
 	t_fractal	*fractal;
@@ -117,16 +138,16 @@ void	my_zoomhook(double xdelta, double ydelta, void *param)
 		&(fractal->cursor->x), &(fractal->cursor->y));
 	fractal->cursor->pos = from_mlx_to_complex(fractal->cursor->x,
 			fractal->cursor->y, fractal);
-	printf("Mouse pos: %f + %fi\n", fractal->cursor->pos->real,
-		fractal->cursor->pos->imag);
+	// printf("Mouse pos: %f + %fi\n", fractal->cursor->pos->real,
+	// 	fractal->cursor->pos->imag);
 	if (ydelta < 0)
 		fractal->zoom = fractal->zoom * fabs(ydelta * 10);
 	else if (ydelta > 0)
 		fractal->zoom = fractal->zoom / fabs(ydelta * 10);
 	if (xdelta < 0)
-		puts("Left!");
+		printf("Left!");
 	else if (xdelta > 0)
-		puts("Right!");
+		printf("Right!");
 }
 
 int	main(int argc, char **argv)
@@ -141,15 +162,17 @@ int	main(int argc, char **argv)
 			&& strncmp(argv[1], "julia", strlen(argv[1])))
 			{
 				printf("Please enter a valid set name.\n");
-				return (0);
+				return (EXIT_FAILURE);
 			}
 		else
 		{
 			fractal = initialize_fractal(argv[1]);
-			mlx_loop_hook(fractal->window, color_fractal, fractal);
-			mlx_loop_hook(fractal->window, ft_keys_hook, fractal);
-			mlx_scroll_hook(fractal->window, &my_zoomhook, fractal);
-			mlx_resize_hook(fractal->window, NULL, NULL);
+			mlx_loop_hook(fractal->window, color_fractal, fractal);  // generic hook
+			mlx_loop_hook(fractal->window, ft_keys_hook, fractal);   // also a generic hook - why is it not working?
+			
+			mlx_scroll_hook(fractal->window, &my_zoomhook, fractal); // specialized hook 
+			// mlx_key_hook(fractal->window, &my_keyhook, fractal);
+			mlx_resize_hook(fractal->window, NULL, NULL);           // specialized hook 
 			mlx_loop(fractal->window);
 			mlx_terminate(fractal->window);
 			free(fractal); // I don't know if I am freeing also compl and cursor by doing this
