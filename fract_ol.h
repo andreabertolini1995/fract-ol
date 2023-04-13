@@ -27,6 +27,7 @@
 # define ITERATIONS 400
 # define IN	0
 # define OUT 1
+# define START 2
 
 // Complex number sruct
 typedef struct s_complex
@@ -49,14 +50,13 @@ typedef struct s_fractal
 	mlx_t				*window;
 	mlx_image_t			*image;
 	double				zoom;
-	bool				zoomed;
 	char				*set;
 	t_point				*cursor;
 }	t_fractal;
 
 // Initialization
 t_complex	*initialize_complex(double real, double imag);
-t_point		*initialize_cursor(void);
+void		initialize_cursor(t_fractal *fractal);
 t_fractal	*initialize_fractal(char *set);
 void		ft_error(void);
 

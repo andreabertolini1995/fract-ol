@@ -12,34 +12,35 @@
 
 #include "fract_ol.h"
 
-t_complex *initialize_complex()
+t_complex	*initialize_complex(double real, double imag)
 {
 	t_complex	*compl;
 
 	compl = malloc (sizeof(t_complex));
-		if (compl == NULL)
-			return (NULL);
-	compl->real = 0;
-	compl->imag = 0;
+	if (compl == NULL)
+		return (NULL);
+	compl->real = real;
+	compl->imag = imag;
 	return (compl);
 }
 
-t_cursor	*initialize_cursor()
+void	initialize_cursor(t_fractal *fractal)
 {
-	t_cursor		*cursor;
+	t_point		*cursor;
 
-	cursor = malloc (sizeof(t_cursor));
+	cursor = malloc (sizeof(t_point));
 	if (cursor == NULL)
-		return (NULL);
-	cursor->x = 0;
-	cursor->y = 0;
-	cursor->pos = initialize_complex();
-	return (cursor);
+		fractal->cursor = NULL;
+	fractal->cursor = cursor;
+	mlx_get_mouse_pos(fractal->window,
+		&(fractal->cursor->x), &(fractal->cursor->y));
+	fractal->cursor->pos = from_mlx_to_complex(fractal->cursor->x,
+			fractal->cursor->y, fractal);
 }
 
-t_fractal *initialize_fractal(char *set)
+t_fractal	*initialize_fractal(char *set)
 {
-	t_fractal 		*fractal;
+	t_fractal	*fractal;
 
 	fractal = malloc (sizeof(t_fractal));
 	if (fractal == NULL)
@@ -48,10 +49,11 @@ t_fractal *initialize_fractal(char *set)
 	if (!fractal->window)
 		ft_error();
 	fractal->image = mlx_new_image(fractal->window, WIDTH, HEIGHT);
-	if (!fractal->image || (mlx_image_to_window(fractal->window, fractal->image, 0, 0) < 0))
+	if (!fractal->image || (mlx_image_to_window(fractal->window,
+				fractal->image, 0, 0) < 0))
 		ft_error();
 	fractal->set = set;
 	fractal->zoom = 1;
-	fractal->cursor = initialize_cursor();
+	initialize_cursor(fractal);
 	return (fractal);
 }
