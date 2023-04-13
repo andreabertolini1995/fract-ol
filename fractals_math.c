@@ -27,6 +27,23 @@ t_complex	*from_mlx_to_complex(double x, double y, t_fractal *fractal)
 	return (num);
 }
 
+// Achieve the result only for the first wheel move for some reason -> fix must not be difficult
+static t_complex	*move_fractal(t_complex *num, t_fractal *fractal)
+{
+	double diff_x;
+	double diff_y;
+
+	diff_x = fractal->cursor_after_zoom->pos->real - fractal->cursor_before_zoom->pos->real;
+	diff_y = fractal->cursor_after_zoom->pos->imag - fractal->cursor_before_zoom->pos->imag;
+	// if (diff_x != 0)
+	// 	printf("Difference in x: %f\n", diff_x);
+	num->real = num->real - diff_x;
+	num->imag = num->imag - diff_y;
+	// fractal->image->instances[0].x += fractal->cursor_after_zoom->x - fractal->cursor_before_zoom->x;
+	// fractal->image->instances[0].y += fractal->cursor_after_zoom->y - fractal->cursor_before_zoom->y;
+	return (num);
+}
+
 int from_real_to_mlx(double real)
 {
 	int x;
@@ -42,31 +59,6 @@ int from_imag_to_mlx(double imag)
 	y = ((1 - imag)) * HEIGHT / 2;
 	return (y);
 }
-
-// static void	move_fractal(t_fractal *fractal, int x, int y)
-// {
-// 	fractal->image->instances[0].x -= x;
-// 	fractal->image->instances[0].y -= y;
-// }
-
-// Function that returns an array containing the shift in x and y from the cursor 
-// position after zooming and cursor position before zooming
-// static double	*compute_mouse_shift(t_fractal *fractal)
-// {
-// 	double	*shift;
-// 	t_point	*mouse;
-
-// 	shift = (double *) malloc (sizeof(double) * 2);
-// 	if (shift == NULL)
-// 		return (NULL);
-// 	mouse = initialize_cursor();
-// 	// Get the mouse complex coordinates after zooming
-// 	mlx_get_mouse_pos(fractal->window, &(mouse->x), &(mouse->y));
-// 	mouse->pos = from_mlx_to_complex(mouse->x, mouse->y, fractal);
-// 	shift[0] = mouse->pos->real - fractal->cursor->pos->real;
-// 	shift[1] = mouse->pos->imag - fractal->cursor->pos->imag;
-// 	return (shift);
-// }
 
 int	check_stability(t_complex *z, t_complex *c)
 {
@@ -102,9 +94,10 @@ int	create_set(double x, double y, t_fractal *fractal)
 	z = malloc (sizeof(t_complex));
 	if (z == NULL)
 		return (0);
-	if (!ft_strncmp(fractal->set, "mandelbrot", ft_strlen(fractal->set)))
+	if (!strncmp(fractal->set, "mandelbrot", strlen(fractal->set)))
 	{
 		c = from_mlx_to_complex(x, y, fractal);
+		c = move_fractal(c, fractal);
 		z->real = 0;
 		z->imag = 0;
 	}
@@ -114,12 +107,10 @@ int	create_set(double x, double y, t_fractal *fractal)
 		if (c == NULL)
 			return (0);
 		z = from_mlx_to_complex(x, y, fractal);
+		z = move_fractal(z, fractal);
 		c->real = -0.8;
 		c->imag = 0.156;
 	}
-	// shift = compute_mouse_shift(fractal);
-	// printf("Shift: %f, %f\n", shift[0], shift[1]);
-	// move_fractal(fractal, shift[0], shift[1]);
 	iterations = check_stability(z, c);
 	free(c);
 	free(z);

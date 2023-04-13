@@ -57,15 +57,21 @@ void	my_zoomhook(double xdelta, double ydelta, void *param)
 
 	fractal = (t_fractal *) param;
 	mlx_get_mouse_pos(fractal->window,
-		&(fractal->cursor->x), &(fractal->cursor->y));
-	fractal->cursor->pos = from_mlx_to_complex(fractal->cursor->x,
-			fractal->cursor->y, fractal);
-	printf("Mouse pos: %f + %fi\n", fractal->cursor->pos->real,
-		fractal->cursor->pos->imag);
+		&(fractal->cursor_before_zoom->x), &(fractal->cursor_before_zoom->y));
+	fractal->cursor_before_zoom->pos = from_mlx_to_complex(fractal->cursor_before_zoom->x,
+			fractal->cursor_before_zoom->y, fractal);
+	printf("Mouse pos before zoom: %f + %fi\n", fractal->cursor_before_zoom->pos->real,
+		fractal->cursor_before_zoom->pos->imag);
 	if (ydelta > 0) // zoom out
 		fractal->zoom = fractal->zoom / 0.9;
 	else if (ydelta < 0) // zoom in
 		fractal->zoom = fractal->zoom * 0.9;
+	mlx_get_mouse_pos(fractal->window,
+		&(fractal->cursor_after_zoom->x), &(fractal->cursor_after_zoom->y));
+	fractal->cursor_after_zoom->pos = from_mlx_to_complex(fractal->cursor_after_zoom->x,
+			fractal->cursor_after_zoom->y, fractal);
+	printf("Mouse pos after zoom: %f + %fi\n", fractal->cursor_after_zoom->pos->real,
+		fractal->cursor_after_zoom->pos->imag);
 	if (xdelta < 0)
 		printf("Left!");
 	else if (xdelta > 0)

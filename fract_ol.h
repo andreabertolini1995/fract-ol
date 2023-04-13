@@ -51,12 +51,13 @@ typedef struct s_fractal
 	mlx_image_t			*image;
 	double				zoom;
 	char				*set;
-	t_point				*cursor;
+	t_point				*cursor_before_zoom;
+	t_point				*cursor_after_zoom;
 }	t_fractal;
 
 // Initialization
 t_complex	*initialize_complex(double real, double imag);
-void		initialize_cursor(t_fractal *fractal);
+t_point		*initialize_cursor();
 t_fractal	*initialize_fractal(char *set);
 void		ft_error(void);
 
