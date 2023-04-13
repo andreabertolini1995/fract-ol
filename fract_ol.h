@@ -25,6 +25,8 @@
 # define WIDTH 1920 
 # define HEIGHT 995
 # define ITERATIONS 400
+# define IN	0
+# define OUT 1
 
 // Complex number sruct
 typedef struct s_complex
@@ -47,6 +49,7 @@ typedef struct s_fractal
 	mlx_t				*window;
 	mlx_image_t			*image;
 	double				zoom;
+	bool				zoomed;
 	char				*set;
 	t_point				*cursor;
 }	t_fractal;

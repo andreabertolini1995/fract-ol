@@ -19,10 +19,18 @@ t_complex	*from_mlx_to_complex(double x, double y, t_fractal *fractal)
 	num = malloc (sizeof(t_complex));
 	if (num == NULL)
 		return (NULL);
-	num->real = (-1 + 2 * (x / WIDTH)) * WIDTH / HEIGHT * fractal->zoom
-		+ fractal->cursor->pos->real;
-	num->imag = (1 - 2 * (y / HEIGHT)) * fractal->zoom
-		+ fractal->cursor->pos->imag;
+	if (fractal->zoomed == IN)
+	{
+		num->real = (-1 + 2 * (x / WIDTH)) * WIDTH / HEIGHT * fractal->zoom
+			+ fractal->cursor->pos->real;
+		num->imag = (1 - 2 * (y / HEIGHT)) * fractal->zoom
+			+ fractal->cursor->pos->imag;
+	}
+	else
+	{
+		num->real = (-1 + 2 * (x / WIDTH)) * WIDTH / HEIGHT * fractal->zoom;
+		num->imag = (1 - 2 * (y / HEIGHT)) * fractal->zoom;
+	}
 	return (num);
 }
 
@@ -59,7 +67,7 @@ int	create_set(double x, double y, t_fractal *fractal)
 	z = malloc (sizeof(t_complex));
 	if (z == NULL)
 		return (0);
-	if (!strncmp(fractal->set, "mandelbrot", strlen(fractal->set)))  // to change with my own functions
+	if (!ft_strncmp(fractal->set, "mandelbrot", ft_strlen(fractal->set)))
 	{
 		c = from_mlx_to_complex(x, y, fractal);
 		z->real = 0;

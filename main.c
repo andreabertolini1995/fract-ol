@@ -64,6 +64,7 @@ t_fractal	*initialize_fractal(char *set)
 		ft_error();
 	fractal->set = set;
 	fractal->zoom = 1;
+	fractal->zoomed = IN;
 	fractal->cursor = initialize_cursor();
 	return (fractal);
 }
@@ -140,10 +141,17 @@ void	my_zoomhook(double xdelta, double ydelta, void *param)
 			fractal->cursor->y, fractal);
 	// printf("Mouse pos: %f + %fi\n", fractal->cursor->pos->real,
 	// 	fractal->cursor->pos->imag);
-	if (ydelta < 0)
-		fractal->zoom = fractal->zoom * fabs(ydelta * 10);
-	else if (ydelta > 0)
-		fractal->zoom = fractal->zoom / fabs(ydelta * 10);
+	printf("Zoom: %f\n", fractal->zoom);
+	if (ydelta > 0) // zoom in
+	{
+		fractal->zoom = fractal->zoom / 0.9;
+		fractal->zoomed = IN;
+	}
+	else if (ydelta < 0) // zoom out
+	{
+		fractal->zoom = fractal->zoom * 0.9;
+		fractal->zoomed = OUT;
+	}
 	if (xdelta < 0)
 		printf("Left!");
 	else if (xdelta > 0)
