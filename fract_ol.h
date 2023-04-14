@@ -25,7 +25,8 @@
 # define WIDTH 1920 
 # define HEIGHT 995
 # define ITERATIONS 400
-# define IN	0
+# define ZOOM_FACTOR 0.7
+# define IN 0
 # define OUT 1
 # define START 2
 
@@ -50,6 +51,8 @@ typedef struct s_fractal
 	mlx_t				*window;
 	mlx_image_t			*image;
 	double				zoom;
+	bool				zoom_type;
+	double				number_zooms;
 	char				*set;
 	t_point				*cursor_before_zoom;
 	t_point				*cursor_after_zoom;

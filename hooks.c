@@ -63,9 +63,18 @@ void	my_zoomhook(double xdelta, double ydelta, void *param)
 	printf("Mouse pos before zoom: %f + %fi\n", fractal->cursor_before_zoom->pos->real,
 		fractal->cursor_before_zoom->pos->imag);
 	if (ydelta > 0) // zoom out
-		fractal->zoom = fractal->zoom / 0.9;
+	{
+		fractal->zoom_type = OUT;
+		fractal->zoom = fractal->zoom / ZOOM_FACTOR;
+		fractal->number_zooms = 1 + fractal->number_zooms * ZOOM_FACTOR;
+	}
 	else if (ydelta < 0) // zoom in
-		fractal->zoom = fractal->zoom * 0.9;
+	{
+		fractal->zoom_type = IN;
+		fractal->zoom = fractal->zoom * ZOOM_FACTOR;
+		fractal->number_zooms = (fractal->number_zooms - 1) / ZOOM_FACTOR;
+	}
+	// printf("Number of zooms: %f\n", fractal->number_zooms);	
 	mlx_get_mouse_pos(fractal->window,
 		&(fractal->cursor_after_zoom->x), &(fractal->cursor_after_zoom->y));
 	fractal->cursor_after_zoom->pos = from_mlx_to_complex(fractal->cursor_after_zoom->x,

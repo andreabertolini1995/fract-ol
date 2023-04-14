@@ -19,15 +19,11 @@ t_complex	*from_mlx_to_complex(double x, double y, t_fractal *fractal)
 	num = malloc (sizeof(t_complex));
 	if (num == NULL)
 		return (NULL);
-	// printf("Zoom: %f\n", fractal->zoom);
 	num->real = (-1 + 2 * (x / WIDTH)) * WIDTH / HEIGHT * fractal->zoom;
-		//+ fractal->cursor->pos->real;
 	num->imag = (1 - 2 * (y / HEIGHT)) * fractal->zoom;
-		//+ fractal->cursor->pos->imag;
 	return (num);
 }
 
-// Achieve the result only for the first wheel move for some reason -> fix must not be difficult
 static t_complex	*move_fractal(t_complex *num, t_fractal *fractal)
 {
 	double diff_x;
@@ -35,12 +31,17 @@ static t_complex	*move_fractal(t_complex *num, t_fractal *fractal)
 
 	diff_x = fractal->cursor_after_zoom->pos->real - fractal->cursor_before_zoom->pos->real;
 	diff_y = fractal->cursor_after_zoom->pos->imag - fractal->cursor_before_zoom->pos->imag;
-	// if (diff_x != 0)
-	// 	printf("Difference in x: %f\n", diff_x);
-	num->real = num->real - diff_x;
-	num->imag = num->imag - diff_y;
-	// fractal->image->instances[0].x += fractal->cursor_after_zoom->x - fractal->cursor_before_zoom->x;
-	// fractal->image->instances[0].y += fractal->cursor_after_zoom->y - fractal->cursor_before_zoom->y;
+	if (fractal->zoom_type == OUT)
+	{
+		num->real = num->real - fractal->number_zooms * diff_x;
+		num->imag = num->imag - fractal->number_zooms * diff_y;
+		
+	}
+	else if (fractal->zoom_type == IN)
+	{
+		num->real = num->real + (ZOOM_FACTOR * fractal->number_zooms) * diff_x;
+		num->imag = num->imag + (ZOOM_FACTOR * fractal->number_zooms) * diff_y;
+	}
 	return (num);
 }
 
@@ -89,7 +90,6 @@ int	create_set(double x, double y, t_fractal *fractal)
 	t_complex	*z;
 	t_complex	*c;
 	int			iterations;
-	//double		*shift;
 
 	z = malloc (sizeof(t_complex));
 	if (z == NULL)
@@ -112,8 +112,8 @@ int	create_set(double x, double y, t_fractal *fractal)
 		c->imag = 0.156;
 	}
 	iterations = check_stability(z, c);
-	free(c);
 	free(z);
+	free(c);
 	return iterations;
 }
 
