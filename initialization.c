@@ -52,7 +52,9 @@ t_fractal	*initialize_fractal(char *set)
 	fractal->set = set;
 	fractal->zoom = 1;
 	fractal->number_zooms = 0;
+	fractal->num_zooms = 0;
 	fractal->zoom_type = START;
+	fractal->reference_system = initialize_cursor();
 	fractal->cursor_before_zoom = initialize_cursor();
 	fractal->cursor_after_zoom = initialize_cursor();
 	return (fractal);

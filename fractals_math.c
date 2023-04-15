@@ -29,18 +29,29 @@ static t_complex	*move_fractal(t_complex *num, t_fractal *fractal)
 	double diff_x;
 	double diff_y;
 
-	diff_x = fractal->cursor_after_zoom->pos->real - fractal->cursor_before_zoom->pos->real;
-	diff_y = fractal->cursor_after_zoom->pos->imag - fractal->cursor_before_zoom->pos->imag;
-	if (fractal->zoom_type == OUT)
+	if (fractal->num_zooms <= 500)
+	{
+		diff_x = fractal->cursor_after_zoom->pos->real - fractal->cursor_before_zoom->pos->real;
+		diff_y = fractal->cursor_after_zoom->pos->imag - fractal->cursor_before_zoom->pos->imag;
+	}
+	else
+	{
+		diff_x = fractal->cursor_after_zoom->pos->real - fractal->cursor_before_zoom->pos->real
+		+ fractal->zoom / ZOOM_FACTOR * (fractal->cursor_before_zoom->pos->real - fractal->reference_system->pos->real);
+		diff_y = fractal->cursor_after_zoom->pos->imag - fractal->cursor_before_zoom->pos->imag
+		+ fractal->zoom / ZOOM_FACTOR * (fractal->cursor_before_zoom->pos->imag - fractal->reference_system->pos->imag);
+	}
+	if (fractal->zoom_type == IN)
+	{
+		// num->real = num->real + ZOOM_FACTOR / fractal->zoom * (ZOOM_FACTOR * fractal->number_zooms) * diff_x;
+		// num->imag = num->imag + ZOOM_FACTOR / fractal->zoom *(ZOOM_FACTOR * fractal->number_zooms) * diff_y;
+		num->real = num->real + (ZOOM_FACTOR * fractal->number_zooms) * diff_x;
+		num->imag = num->imag + (ZOOM_FACTOR * fractal->number_zooms) * diff_y;
+	}
+	else if (fractal->zoom_type == OUT)
 	{
 		num->real = num->real - fractal->number_zooms * diff_x;
 		num->imag = num->imag - fractal->number_zooms * diff_y;
-		
-	}
-	else if (fractal->zoom_type == IN)
-	{
-		num->real = num->real + (ZOOM_FACTOR * fractal->number_zooms) * diff_x;
-		num->imag = num->imag + (ZOOM_FACTOR * fractal->number_zooms) * diff_y;
 	}
 	return (num);
 }

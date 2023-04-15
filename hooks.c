@@ -56,12 +56,15 @@ void	my_zoomhook(double xdelta, double ydelta, void *param)
 	t_fractal	*fractal;
 
 	fractal = (t_fractal *) param;
+	
+	// Assigning values to the reference system
+	fractal->reference_system->pos->real = fractal->cursor_after_zoom->pos->real;
+	fractal->reference_system->pos->imag = fractal->cursor_after_zoom->pos->imag;
+
 	mlx_get_mouse_pos(fractal->window,
 		&(fractal->cursor_before_zoom->x), &(fractal->cursor_before_zoom->y));
 	fractal->cursor_before_zoom->pos = from_mlx_to_complex(fractal->cursor_before_zoom->x,
 			fractal->cursor_before_zoom->y, fractal);
-	printf("Mouse pos before zoom: %f + %fi\n", fractal->cursor_before_zoom->pos->real,
-		fractal->cursor_before_zoom->pos->imag);
 	if (ydelta > 0) // zoom out
 	{
 		fractal->zoom_type = OUT;
@@ -74,13 +77,18 @@ void	my_zoomhook(double xdelta, double ydelta, void *param)
 		fractal->zoom = fractal->zoom * ZOOM_FACTOR;
 		fractal->number_zooms = (fractal->number_zooms - 1) / ZOOM_FACTOR;
 	}
-	// printf("Number of zooms: %f\n", fractal->number_zooms);	
+	printf("Number of zooms: %f\n", fractal->number_zooms);
+	printf("Zoom: %f\n", fractal->zoom);
 	mlx_get_mouse_pos(fractal->window,
 		&(fractal->cursor_after_zoom->x), &(fractal->cursor_after_zoom->y));
 	fractal->cursor_after_zoom->pos = from_mlx_to_complex(fractal->cursor_after_zoom->x,
 			fractal->cursor_after_zoom->y, fractal);
-	printf("Mouse pos after zoom: %f + %fi\n", fractal->cursor_after_zoom->pos->real,
-		fractal->cursor_after_zoom->pos->imag);
+	fractal->num_zooms++;
+	// printf("Reference system: %f + i%f\n", fractal->reference_system->pos->real, fractal->reference_system->pos->imag);
+	// printf("Cursor before zoom: %f + %fi\n", fractal->cursor_before_zoom->pos->real, fractal->cursor_before_zoom->pos->imag);
+	// printf("Cursor after zoom: %f + i%f\n", fractal->cursor_after_zoom->pos->real, fractal->cursor_after_zoom->pos->real);
+	// printf("Diff real: %f\n", fractal->cursor_before_zoom->pos->real - fractal->reference_system->pos->real);
+	// printf("Diff imag: %f\n\n", fractal->cursor_before_zoom->pos->imag - fractal->reference_system->pos->imag);
 	if (xdelta < 0)
 		printf("Left!");
 	else if (xdelta > 0)

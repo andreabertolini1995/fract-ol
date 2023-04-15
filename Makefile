@@ -15,9 +15,9 @@ MLXFLAGS = -ldl -lglfw -pthread -lm
 all: $(NAME)	
 
 $(NAME): $(FT_PRINTF) $(MLX42) $(OBJS)
-# $(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME)
 # MACOS
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME) -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/"
+# $(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME) -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/"
 
 $(LIBFT):
 	make -C libft

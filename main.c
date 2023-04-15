@@ -42,7 +42,6 @@ int	main(int argc, char **argv)
 			fractal = initialize_fractal(argv[1]);
 			mlx_loop_hook(fractal->window, color_fractal, fractal);  // generic hook
 			mlx_loop_hook(fractal->window, ft_keys_hook, fractal);   // also a generic hook - why is it not working?
-			
 			mlx_scroll_hook(fractal->window, &my_zoomhook, fractal); // specialized hook 
 			// mlx_key_hook(fractal->window, &my_keyhook, fractal);
 			mlx_resize_hook(fractal->window, NULL, NULL);           // specialized hook 

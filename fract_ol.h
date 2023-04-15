@@ -52,7 +52,9 @@ typedef struct s_fractal
 	mlx_image_t			*image;
 	double				zoom;
 	bool				zoom_type;
-	double				number_zooms;
+	double				number_zooms; // to change this name
+	int					num_zooms; 
+	t_point				*reference_system;
 	char				*set;
 	t_point				*cursor_before_zoom;
 	t_point				*cursor_after_zoom;
