@@ -24,15 +24,40 @@ t_complex	*initialize_complex(double real, double imag)
 	return (compl);
 }
 
-t_point	*initialize_cursor()
+t_point	*initialize_point(double real, double imag)
 {
-	t_point		*cursor;
+	t_point		*point;
 
-	cursor = malloc (sizeof(t_point));
+	point = malloc (sizeof(t_point));
+	if (point == NULL)
+		point = NULL;
+	point->pos = initialize_complex(real, imag);
+	return (point);
+}
+
+t_cursor	*initialize_cursor(void)
+{
+	t_cursor		*cursor;
+
+	cursor = malloc (sizeof(t_cursor));
 	if (cursor == NULL)
 		cursor = NULL;
-	cursor->pos = initialize_complex(0,0);
+	cursor->before_zoom = initialize_point(0, 0);
+	cursor->after_zoom = initialize_point(0, 0);
 	return (cursor);
+}
+
+t_zoom	*initialize_zoom(void)
+{
+	t_zoom		*zoom;
+	
+	zoom = malloc (sizeof(t_zoom));
+	if (zoom == NULL)
+		zoom = NULL;
+	zoom->value = 1;
+	zoom->shift = 0;
+	zoom->type = START;
+	return (zoom);
 }
 
 t_fractal	*initialize_fractal(char *set)
@@ -49,13 +74,8 @@ t_fractal	*initialize_fractal(char *set)
 	if (!fractal->image || (mlx_image_to_window(fractal->window,
 				fractal->image, 0, 0) < 0))
 		ft_error();
+	fractal->cursor = initialize_cursor();
+	fractal->zoom = initialize_zoom();
 	fractal->set = set;
-	fractal->zoom = 1;
-	fractal->number_zooms = 0;
-	fractal->num_zooms = 0;
-	fractal->zoom_type = START;
-	fractal->reference_system = initialize_cursor();
-	fractal->cursor_before_zoom = initialize_cursor();
-	fractal->cursor_after_zoom = initialize_cursor();
 	return (fractal);
 }

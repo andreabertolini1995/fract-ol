@@ -29,15 +29,12 @@
 # define IN 0
 # define OUT 1
 # define START 2
-
-// Complex number sruct
 typedef struct s_complex
 {
 	double	real;
 	double	imag;
 }	t_complex;
 
-// Cursor struct
 typedef struct s_point
 {
 	int32_t		x;
@@ -45,40 +42,50 @@ typedef struct s_point
 	t_complex	*pos;
 }	t_point;
 
-// Fractals struct
+typedef struct s_cursor
+{
+	t_point	*before_zoom;
+	t_point	*after_zoom;
+}	t_cursor;
+
+typedef struct s_zoom
+{
+	double				value;
+	bool				type;
+	double				shift;
+}	t_zoom;
+
 typedef struct s_fractal
 {
 	mlx_t				*window;
 	mlx_image_t			*image;
-	double				zoom;
-	bool				zoom_type;
-	double				number_zooms; // to change this name
-	int					num_zooms; 
-	t_point				*reference_system;
+	t_cursor			*cursor;
+	t_zoom				*zoom;
 	char				*set;
-	t_point				*cursor_before_zoom;
-	t_point				*cursor_after_zoom;
+	t_complex			*julia;
 }	t_fractal;
 
 // Initialization
-t_complex	*initialize_complex(double real, double imag);
-t_point		*initialize_cursor();
 t_fractal	*initialize_fractal(char *set);
-void		ft_error(void);
+t_complex	*initialize_complex(double real, double imag);
+t_point		*initialize_point(double real, double imag);
+t_cursor	*initialize_cursor(void);
+t_zoom		*initialize_zoom(void);
 
 // Fractals math
 t_complex	*from_mlx_to_complex(double x, double y, t_fractal *fractal);
-uint32_t	color_set(double x, double y, t_fractal *fractal);
 int			create_set(double x, double y, t_fractal *fractal);
 int			check_stability(t_complex *z, t_complex *c);
-
-// MLX-related functions
-int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+t_complex	*move_fractal(t_complex *num, t_fractal *fractal);
 
 // Hooks
-void		color_fractal(void *param);
-void		my_zoomhook(double xdelta, double ydelta, void *param);
-void		my_cursorhook(double xpos, double ypos, void *param);
-void		ft_keys_hook(void *param);
+void		zoom_hook(double xdelta, double ydelta, void *param);
+
+// Utils
+void		ft_error(void);
+int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+void		store_cursor_position(t_fractal *fractal, t_point *cursor);
+uint32_t	color_set(double x, double y, t_fractal *fractal);
+void		color_fractal(t_fractal *fractal);
 
 #endif
