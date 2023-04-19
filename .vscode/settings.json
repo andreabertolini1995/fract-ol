@@ -1,10 +1,12 @@
 {
-    "files.associations": {
-        "compare": "c",
-        "ft_printf.h": "c",
-        "cstdio": "c",
-        "numeric": "c",
-        "cstdlib": "c",
-        "mlx42.h": "c"
-    }
+  "files.associations": {
+    "*.ejs": "html",
+    "compare": "c",
+    "ft_printf.h": "c",
+    "cstdio": "c",
+    "numeric": "c",
+    "cstdlib": "c",
+    "mlx42.h": "c",
+    "fract_ol.h": "c"
+  }
 }

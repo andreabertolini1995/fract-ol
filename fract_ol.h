@@ -24,7 +24,7 @@
 
 # define WIDTH 1920 
 # define HEIGHT 995
-# define ITERATIONS 400
+# define ITERATIONS 200
 # define ZOOM_FACTOR 0.7
 # define IN 0
 # define OUT 1
@@ -50,23 +50,28 @@ typedef struct s_cursor
 
 typedef struct s_zoom
 {
-	double				value;
-	bool				type;
-	double				shift;
+	double	value;
+	bool	type;
+	double	shift;
 }	t_zoom;
+
+typedef struct s_set
+{
+	char		*type;
+	t_complex	*origin;
+}	t_set;
 
 typedef struct s_fractal
 {
-	mlx_t				*window;
-	mlx_image_t			*image;
-	t_cursor			*cursor;
-	t_zoom				*zoom;
-	char				*set;
-	t_complex			*julia;
+	mlx_t			*window;
+	mlx_image_t		*image;
+	t_cursor		*cursor;
+	t_zoom			*zoom;
+	t_set			*set;
 }	t_fractal;
 
 // Initialization
-t_fractal	*initialize_fractal(char *set);
+t_fractal	*initialize_fractal(char *set, double x, double y);
 t_complex	*initialize_complex(double real, double imag);
 t_point		*initialize_point(double real, double imag);
 t_cursor	*initialize_cursor(void);
@@ -87,5 +92,7 @@ int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void		store_cursor_position(t_fractal *fractal, t_point *cursor);
 uint32_t	color_set(double x, double y, t_fractal *fractal);
 void		color_fractal(t_fractal *fractal);
+double 		ft_atof(char *str);
+int			is_char_in_str(char *str, char c);
 
 #endif

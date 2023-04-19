@@ -76,7 +76,7 @@ int	create_set(double x, double y, t_fractal *fractal)
 	t_complex	*c;
 	int			iterations;
 
-	if (!strncmp(fractal->set, "mandelbrot", strlen(fractal->set)))
+	if (!strncmp(fractal->set->type, "mandelbrot", strlen(fractal->set->type)))
 	{
 		c = from_mlx_to_complex(x, y, fractal);
 		c = move_fractal(c, fractal);
@@ -86,7 +86,8 @@ int	create_set(double x, double y, t_fractal *fractal)
 	{
 		z = from_mlx_to_complex(x, y, fractal);
 		z = move_fractal(z, fractal);
-		c = initialize_complex(0.285, 0.01);
+		c = initialize_complex(fractal->set->origin->real, fractal->set->origin->imag);
+		// c = initialize_complex(-0.70176, -0.3842);
 	}
 	iterations = check_stability(z, c);
 	free(z);
