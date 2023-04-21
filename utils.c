@@ -19,12 +19,13 @@ int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 
 void	ft_error(void)
 {
-	printf("%s", mlx_strerror(mlx_errno));
+	ft_printf("%s", mlx_strerror(mlx_errno));
 	exit(EXIT_FAILURE);
 }
 
 void	store_cursor_position(t_fractal *fractal, t_point *cursor)
 {
+	free(cursor->pos);
 	mlx_get_mouse_pos(fractal->window, &(cursor->x), &(cursor->y));
 	cursor->pos = from_mlx_to_complex(cursor->x, cursor->y, fractal);
 }

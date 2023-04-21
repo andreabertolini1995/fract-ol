@@ -1,6 +1,5 @@
 NAME = fractol
-# SOURCES = zoom.c
-SOURCES = main.c fractals_math.c initialization.c hooks.c utils.c ft_atof.c
+SOURCES = main.c fractals_math.c initialization.c hooks.c utils.c check_input.c free_memory.c
 FT_PRINTF = ft_printf/ft_printf.a
 LIBFT = libft/libft.a
 MLX42 = MLX42/build/libmlx42.a
@@ -15,9 +14,9 @@ MLXFLAGS = -ldl -lglfw -pthread -lm
 all: $(NAME)	
 
 $(NAME): $(FT_PRINTF) $(MLX42) $(OBJS)
-# $(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME)
 # MACOS
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME) -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/"
+# $(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(FT_PRINTF) $(MLX42) $(MLXFLAGS) $(INCLUDES) -o $(NAME) -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/"
 
 $(LIBFT):
 	make -C libft

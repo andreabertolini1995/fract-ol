@@ -12,35 +12,29 @@
 
 #include "fract_ol.h"
 
-void	zoom_hook(double xdelta, double ydelta, void *param)
+void	free_point(t_point *point)
 {
-	t_fractal	*fractal;
-
-	fractal = (t_fractal *) param;
-	store_cursor_position(fractal, fractal->cursor->before_zoom);
-	if (ydelta > 0)
-	{
-		fractal->zoom->type = OUT;
-		fractal->zoom->value = fractal->zoom->value / ZOOM_FACTOR;
-		fractal->zoom->shift = 1 + fractal->zoom->shift * ZOOM_FACTOR;
-	}
-	else if (ydelta < 0)
-	{
-		fractal->zoom->type = IN;
-		fractal->zoom->value = fractal->zoom->value * ZOOM_FACTOR;
-		fractal->zoom->shift = (fractal->zoom->shift - 1) / ZOOM_FACTOR;
-	}
-	store_cursor_position(fractal, fractal->cursor->after_zoom);
-	color_fractal(fractal);
-	(void) xdelta;
-	(void) xdelta;
+	free(point->pos);
+	free(point);
 }
 
-void	keys_hook(void *param)
+void	free_cursor(t_cursor *cursor)
 {
-	t_fractal	*fractal;
+	free_point(cursor->before_zoom);
+	free_point(cursor->after_zoom);
+	free(cursor);
+}
 
-	fractal = (t_fractal *) param;
-	if (mlx_is_key_down(fractal->window, MLX_KEY_ESCAPE))
-		mlx_close_window(fractal->window);
+void	free_set(t_set *set)
+{
+	free(set->origin);
+	free(set);
+}
+
+void	free_all(t_fractal *fractal)
+{
+	free_cursor(fractal->cursor);
+	free(fractal->zoom);
+	free_set(fractal->set);
+	free(fractal);
 }

@@ -15,7 +15,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include <string.h>
 # include <math.h>
 # include "./libft/libft.h"
@@ -29,6 +28,7 @@
 # define IN 0
 # define OUT 1
 # define START 2
+
 typedef struct s_complex
 {
 	double	real;
@@ -71,11 +71,11 @@ typedef struct s_fractal
 }	t_fractal;
 
 // Initialization
-t_fractal	*initialize_fractal(char *set, double x, double y);
 t_complex	*initialize_complex(double real, double imag);
 t_point		*initialize_point(double real, double imag);
 t_cursor	*initialize_cursor(void);
-t_zoom		*initialize_zoom(void);
+t_zoom		*initialize_zoom(double value, double shift, bool type);
+t_set		*initialize_set(char *set_type, double x, double y);
 
 // Fractals math
 t_complex	*from_mlx_to_complex(double x, double y, t_fractal *fractal);
@@ -85,6 +85,7 @@ t_complex	*move_fractal(t_complex *num, t_fractal *fractal);
 
 // Hooks
 void		zoom_hook(double xdelta, double ydelta, void *param);
+void		keys_hook(void *param);
 
 // Utils
 void		ft_error(void);
@@ -92,7 +93,18 @@ int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void		store_cursor_position(t_fractal *fractal, t_point *cursor);
 uint32_t	color_set(double x, double y, t_fractal *fractal);
 void		color_fractal(t_fractal *fractal);
-double 		ft_atof(char *str);
+
+// Check input
+int			is_int(char *str);
+int			is_number(char *str);
+double		calc_divider(int length);
+double		ft_atof(char *str);
 int			is_char_in_str(char *str, char c);
+
+// Free memory
+void		free_point(t_point *point);
+void		free_cursor(t_cursor *cursor);
+void		free_set(t_set *set);
+void		free_all(t_fractal *fractal);
 
 #endif

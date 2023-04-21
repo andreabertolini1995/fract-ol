@@ -59,37 +59,15 @@ t_set	*initialize_set(char *set_type, double x, double y)
 	return (set);
 }
 
-t_zoom	*initialize_zoom(void)
+t_zoom	*initialize_zoom(double value, double shift, bool type)
 {
 	t_zoom		*zoom;
-	
+
 	zoom = malloc (sizeof(t_zoom));
 	if (zoom == NULL)
 		zoom = NULL;
-	zoom->value = 1;
-	zoom->shift = 0;
-	zoom->type = START;
+	zoom->value = value;
+	zoom->shift = shift;
+	zoom->type = type;
 	return (zoom);
-}
-
-t_fractal	*initialize_fractal(char *set_type, double x, double y)
-{
-	t_fractal	*fractal;
-
-	fractal = malloc (sizeof(t_fractal));
-	if (fractal == NULL)
-		return (NULL);
-	fractal->window = mlx_init(WIDTH, HEIGHT, "fractol", true);
-	if (!fractal->window)
-		ft_error();
-	fractal->image = mlx_new_image(fractal->window, WIDTH, HEIGHT);
-	if (!fractal->image || (mlx_image_to_window(fractal->window,
-				fractal->image, 0, 0) < 0))
-		ft_error();
-	fractal->cursor = initialize_cursor();
-	fractal->zoom = initialize_zoom();
-	fractal->set = initialize_set(set_type, x, y);
-	// fractal->set = set;
-	// fractal->julia_coord = initialize_complex(x, y);
-	return (fractal);
 }
