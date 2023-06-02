@@ -17,7 +17,7 @@ Let's now imagine to apply this function to the point A and iteratively apply th
 
 It's very interesting to see that for some values of `c` the iteration converges, while for others it diverges to infinity at different speed. In the following example, `A = 0.4 + 0.4i`.
 
-https://github.com/andreabertolini1995/fract-ol/assets/51784826/4c018d1a-0303-47c6-940b-0b98075dc1c3
+https://github.com/andreabertolini1995/fract-ol/assets/51784826/c4cf570e-9c60-4391-a9cb-3c98a96b212a
 
 When iterated from `A = 0`, the set of complex numbers `c` for which the function $f(z) = z^2 + c$ does not diverge to infinity is called the [Mandelbrot Set](https://en.wikipedia.org/wiki/Mandelbrot_set). 
 
@@ -38,9 +38,10 @@ cd fract_ol
 make
 ```
 
-Then, you can launch the executable followed by the name of the fractal you want to display. 
+Then, you can launch the executable followed by the name of the fractal you want to display. With the mouse wheel you will be able to zoom in and out almost infinitely (within the limits of the
+computer). 
 ```
-./fract_ol mandelbrot
+./fractol mandelbrot
 ```
 
 https://github.com/andreabertolini1995/fract-ol/assets/51784826/fe0c0355-d735-4d8d-a360-380256b1eb7d
