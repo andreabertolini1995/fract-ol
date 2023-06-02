@@ -18,6 +18,14 @@ It's very interesting to see that for some values of `c` the iteration converges
 
 https://github.com/andreabertolini1995/fract-ol/assets/51784826/4c018d1a-0303-47c6-940b-0b98075dc1c3
 
+
 When terated from `A = 0`, the set of complex numbers `c` for which the function $f(z) = z^2 + c$ does not diverge to infinity is called the [Mandelbrot Set](https://en.wikipedia.org/wiki/Mandelbrot_set). 
 
 On the other hand, for a given complex number c, the [Julia set](https://en.wikipedia.org/wiki/Julia_set) of c is the set of all `A` for which the iteration $f(z) = z^2 + c$ does not diverge to infinity.
+
+Particularly interesting to see are the boundaries of the different Julia sets for a given value of `c`, i.e. the perimiter in the complex plane outside which the iterations diverges to infinity.
+
+https://github.com/andreabertolini1995/fract-ol/assets/51784826/f5125428-00dd-49b9-a96e-2b18b7d2b436
+
+Within the scope of this project, it was required to display the Mandelbrot set as well as any possible Julia set, given a different value of the constant `c` as input.
+
