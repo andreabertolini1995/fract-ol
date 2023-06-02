@@ -33,7 +33,7 @@ Within the scope of this project, it was required to display the Mandelbrot set 
 
 To run the algorithm, it is first needed to clone the repository, move the its directory and then execute the Makefile. 
 ```
-git clone https://github.com/andreabertolini1995/push_swap.git
+git clone https://github.com/andreabertolini1995/fract-ol.git
 cd fract_ol
 make
 ```
@@ -45,5 +45,10 @@ Then, you can launch the executable followed by the name of the fractal you want
 
 https://github.com/andreabertolini1995/fract-ol/assets/51784826/fe0c0355-d735-4d8d-a360-380256b1eb7d
 
+For the Julia set, it is required to specify the complex coordinates of the constant `c`.
+```
+./fractol julia 0.285 0.01
+```
 
+https://github.com/andreabertolini1995/fract-ol/assets/51784826/247c0853-aec7-4a41-80fc-60b0251fc552
 
