@@ -13,9 +13,9 @@ A fractal is an abstract mathematical object, like a curve or a surface, which p
 To understand what fractals are all about, we need to take a step back and dive a little bit into the world of complex numbers.
 
 Let's consider a point `A` and a constant `c` in the complex plane, as well as the generic function $f(z) = z^2 + c$. 
-Let's now imagine to apply this function to the point A and iteratively apply the same function to its result, again and again, for let's say about 100 iterations.
+Let's now imagine to apply this function to the point `A` and iteratively apply the same function to its result, again and again, for let's say about 100 iterations.
 
-It's very interesting to see that for some values of `c` the iteration converges, while for others it diverges to infinity at different speed. In the following example, `A = 0.4 + 0.4i`.
+It's very interesting to see that for some values of `c` the iteration converges, while for others it diverges to infinity at different speed. In the following example, `A` is set to `0.4 + 0.4i`.
 
 https://github.com/andreabertolini1995/fract-ol/assets/51784826/c4cf570e-9c60-4391-a9cb-3c98a96b212a
 
