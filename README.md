@@ -44,10 +44,7 @@ computer).
 ./fractol mandelbrot
 ```
 
-<!-- https://github.com/andreabertolini1995/fract-ol/assets/51784826/37b33d69-1c9c-4f86-94b1-f0a2130970f7 -->
-
-
-https://github.com/andreabertolini1995/fract-ol/assets/51784826/82616ff7-ec1b-42c7-85e7-785c834e8265
+https://github.com/andreabertolini1995/fract-ol/assets/51784826/c0fd1f8b-e653-4b70-a4cc-3c2dc4226547
 
 
 For the Julia set, it is required to specify the complex coordinates of the constant `c`.
